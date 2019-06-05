@@ -65,13 +65,15 @@ static void writeRegister(uint8_t i2cAddress, uint8_t value) {
 /*!
     @brief  Reads the 16-bits From the Data Registor*/
 /**************************************************************************/
-static uint32_t readRegister(uint8_t i2cAddress) {
+
+static uint16_t readRegister2(uint8_t i2cAddress) {
   Wire.beginTransmission(i2cAddress);
   Wire.endTransmission();
-  Wire.requestFrom(i2cAddress, (uint8_t)3);
-  return ((i2cread() << 16) | i2cread()<<8 | i2cread());
+  Wire.requestFrom(i2cAddress, (uint8_t)2);
+  return ((i2cread()<<8) | i2cread());  
 }
 /**************************************************************************/
+
 /*!
     @brief  Instantiates a new ADS1100 class w/appropriate properties
 */
@@ -207,29 +209,24 @@ void ADS1100::setSPS(adsSPS_t sps){
 /**************************************************************************/
 int16_t ADS1100::readADC(uint8_t mode = ADS1100_REG_CONFIG_OS_SINGLE) 
 {
- uint32_t results;
- uint16_t conversiondata;
- uint8_t status = (0x00);
+ uint16_t results;
 	uint8_t config1 = 	m_gain						    		| // Set Gain Settings
-						ADS1100_REG_CONFIG_OS_SINGLE			| // Set Operation Mode
-						mode									| // Singe vs continous
+						mode									| // Set Operation Mode
 						m_sps;									  // Sample Rate
-
-						
-  // Write config registers to the ADC and start conversion
-	writeRegister(m_i2cAddress, config1);
-	// Deteck if in continous or Single Shot mode
+	// Determine if in continous or Single Shot mode
 	if (mode = ADS1100_REG_CONFIG_OS_SINGLE){
-	do { 
-		results = readRegister(m_i2cAddress);//read the data and config regustures
-		conversiondata = (uint16_t)results>>8; //Removing the configuration register data from the register read
-		status = (uint8_t)results; //Removing the data registers from the configuration data
-		status = status >>7; //Shifting to check MSB which indicates if conversion is finished
-		delay(5);
-		} while (status != 0x01); //If conversion is not ready restart the Do process
+		config1 = config1| ADS1100_REG_CONFIG_SINGLE_START; //Add Single Shot Start Command
+		writeRegister(m_i2cAddress, config1);//Write Configruation Data to Chip
+		delay(5);//Wait for converson to complete
+		results = readRegister2(m_i2cAddress);//Read Conversion data
+		
 	}
-	
-  return conversiondata;
+	else if(mode = ADS1100_REG_CONFIG_OS_CONTINIUS){
+		writeRegister(m_i2cAddress, config1);//Write Configruation Data to Chip
+		delay(5);//Wait for converson to complete
+		results = readRegister2(m_i2cAddress);//Read Conversion data
+	}
+  return results;
 	
 }
 
