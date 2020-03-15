@@ -33,17 +33,22 @@ void setup() {
   ads.begin();
   
 }
-/*Single Endeded mode at 8SPS
+/**********************************************************
+ Single Endeded mode at 8SPS
  8 SPS = 16 Bit Resultion
  Single ended mode loses 1 bit
     Conversion Factor = (Vref/Gain) /2^(16-1)
-    Conversion Factor = (5V)/2^15 bits
-    Conversion Factor = .152588mV/bit
+    Vdd = 5V
+      Conversion Factor = (5V)/2^15 bits
+      Conversion Factor = .152588mV/bit
+    Vdd = 3.3V (Qwiic Connector)
+      Conversion Factor = (3.3V)/2^15 bits
+      Conversion Factor = .100708mV/bit
  */
 void loop() {
-  float cf = 0.152588F;
-  int16_t results;
-  results = ads.readADC(); //Read the ADC in Single Coversion Mode
+  //float cf = 0.152588F;
+  float cf = .100708F;
+  int16_t results = ads.readADC(); //Read the ADC in Single Coversion Mode
   Serial.print("Differential: "); 
   Serial.print(results); 
   Serial.print("("); 

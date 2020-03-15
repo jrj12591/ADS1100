@@ -7,14 +7,23 @@
 	Driver for the Texas Instrument ADS1100 ADC
 
     
-	Please Note This driver is based on the driver for the ADS1015 created by Adafruit
+	Available in 8 Flavors
+    A0 = I2C Address 0x48
+    A1 = I2C Address 0x49
+    A2 = I2C Address 0x50
+    A3 = I2C Address 0x51
+    A4 = I2C Address 0x52
+    A5 = I2C Address 0x53
+    A6 = I2C Address 0x54
+    A7 = I2C Address 0x55
 	
     @section  HISTORY
 
     v1.0 - First release
 */
 /**************************************************************************/
-
+#ifndef _ADS1100_H_
+    #define _ADS1100_H_
 #if ARDUINO >= 100
  #include "Arduino.h"
 #else
@@ -156,3 +165,5 @@ class ADS1100A7: public ADS1100
 
  private:
 };
+
+#endif
