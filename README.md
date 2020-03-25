@@ -19,4 +19,11 @@ Available in 8 Preprogramed I2C address
 * ADS1100A6 = 0x4E
 * ADS1100A7 = 0x4F
 
+##Available Commands
+~
+.begin()
+.setGain()
+.setSPS()
+.readADC()
+~
 
