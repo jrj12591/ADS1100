@@ -7,23 +7,17 @@
 	Driver for the Texas Instrument ADS1100 ADC
 
     
-	Available in 8 Flavors
-    A0 = I2C Address 0x48
-    A1 = I2C Address 0x49
-    A2 = I2C Address 0x50
-    A3 = I2C Address 0x51
-    A4 = I2C Address 0x52
-    A5 = I2C Address 0x53
-    A6 = I2C Address 0x54
-    A7 = I2C Address 0x55
+	Please Note This driver is based on the driver for the ADS1015 created by Adafruit
 	
     @section  HISTORY
 
     v1.0 - First release
+	v1.0.1 - Removed Default value from Function call in .cpp to allow for better support amoung arduino devices.
 */
 /**************************************************************************/
-#ifndef _ADS1100_H_
-    #define _ADS1100_H_
+#ifndef ADS1100_H
+	#define ADS1100_H
+	
 #if ARDUINO >= 100
  #include "Arduino.h"
 #else
@@ -98,70 +92,6 @@ protected:
   int16_t  readADC(uint8_t mode = ADS1100_REG_CONFIG_OS_SINGLE);
   void      setGain(adsGain_t gain);
   void		setSPS(adsSPS_t sps);
-
- private:
-};
-
-class ADS1100A0: public ADS1100
-{
- public:
-  ADS1100A0(uint8_t i2cAddress = ADS1100_A0);
-
- private:
-};
-
-class ADS1100A1: public ADS1100
-{
- public:
-  ADS1100A1(uint8_t i2cAddress = ADS1100_A1);
-
- private:
-};
-
-class ADS1100A2: public ADS1100
-{
- public:
-  ADS1100A2(uint8_t i2cAddress = ADS1100_A2);
-
- private:
-};
-
-class ADS1100A3: public ADS1100
-{
- public:
-  ADS1100A3(uint8_t i2cAddress = ADS1100_A3);
-
- private:
-};
-
-class ADS1100A4: public ADS1100
-{
- public:
-  ADS1100A4(uint8_t i2cAddress = ADS1100_A4);
-
- private:
-};
-
-class ADS1100A5: public ADS1100
-{
- public:
-  ADS1100A5(uint8_t i2cAddress = ADS1100_A5);
-
- private:
-};
-
-class ADS1100A6: public ADS1100
-{
- public:
-  ADS1100A6(uint8_t i2cAddress = ADS1100_A6);
-
- private:
-};
-
-class ADS1100A7: public ADS1100
-{
- public:
-  ADS1100A7(uint8_t i2cAddress = ADS1100_A7);
 
  private:
 };
