@@ -13,6 +13,7 @@
 
     v1.0 - First release
 	v1.0.1 - Removed Default value from Function call in .cpp to allow for better support amoung arduino devices.
+	v2.0 - Rewrote the I2c interaface to support arudino with multiple i2c ports
 */
 /**************************************************************************/
 #ifndef ADS1100_H
@@ -82,18 +83,20 @@ class ADS1100
 {
 protected:
    // Instance-specific properties
-   uint8_t m_i2cAddress;
    adsGain_t m_gain;
    adsSPS_t  m_sps;
 
  public:
-  ADS1100(uint8_t i2cAddress = ADS1100_A0);
+  ADS1100(uint8_t i2cAddress = ADS1100_A0, TwoWire &wirePort = Wire);
   void begin(void);
   int16_t  readADC(uint8_t mode = ADS1100_REG_CONFIG_OS_SINGLE);
   void      setGain(adsGain_t gain);
   void		setSPS(adsSPS_t sps);
-
+  void 		writeRegister(uint8_t value);
+  uint16_t  readRegister();
  private:
+ TwoWire *_i2cPort;
+ uint8_t _i2cAddress;
 };
 
 #endif
